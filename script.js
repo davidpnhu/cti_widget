@@ -1,4 +1,28 @@
+
+function formatInternationalWithDashes(phone) {
+  const digits = phone.replace(/\D/g, "");
+
+  // Assume North America if 10 digits
+  if (digits.length === 10) {
+    return `+1 ${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+
+  // If already includes country code (11 digits starting with 1)
+  if (digits.length === 11 && digits.startsWith("1")) {
+    return `+1 ${digits.slice(1, 4)}-${digits.slice(4, 7)}-${digits.slice(7)}`;
+  }
+
+  return phone; // fallback if unknown format
+}
+
+
+
+
+
 function handleAccept() {
+    // Example
+//console.log(formatInternationalWithDashes("6138091652"));
+// +1 613-809-1652
   debugger;
   var auth = "Basic " + $('#auth').val();
   //"https://canbs-ccx-pub.internal.bloodservices.ca:8445/finesse/api/User/1002005/Dialogs"
@@ -13,7 +37,7 @@ function handleAccept() {
     success: function (data) {
       debugger;
       console.log(data);
-      var fromAddress = $(data).find("Dialog > fromAddress").text();
+      var fromAddress = formatInternationalWithDashes($(data).find("Dialog > fromAddress").text());
       console.log("From Address is", fromAddress);
       $('#callerID').val(fromAddress);
       var parameters = {
