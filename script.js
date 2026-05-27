@@ -2,7 +2,8 @@ function handleAccept() {
   debugger;
   var auth = "Basic " + $('#auth').val();
   //"https://canbs-ccx-pub.internal.bloodservices.ca:8445/finesse/api/User/1002005/Dialogs"
-  var url = "https://my1002373.us1.test.crm.cloud.sap/sap/c4c/api/v1/account-service/accounts?$filter=defaultCommunication/phoneNormalisedNumber%20eq%20%27%2B16131112222%27&$select=displayId,isNaturalPerson";
+  var url = "http://api.apis.guru/v2/list.json";
+  //  "https://my1002373.us1.test.crm.cloud.sap/sap/c4c/api/v1/account-service/accounts?$filter=defaultCommunication/phoneNormalisedNumber%20eq%20%27%2B16131112222%27&$select=displayId,isNaturalPerson";
   $.ajax({
     url: url,
     method: "GET",
