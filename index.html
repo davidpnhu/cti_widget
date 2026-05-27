@@ -1,44 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Cloud Widget POC</title>
-    <meta name="author" content="Lloyd Goveia">
-    <meta name="description" content="Service Cloud Widget POC created by Lloyd Goveia. Provided AS IS with no support.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Cloud Widget POC</title>
+  <meta name="author" content="Lloyd Goveia">
+  <meta name="description" content="Service Cloud Widget POC created by Lloyd Goveia. Provided AS IS with no support.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
   <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
-    <script defer src="script.js"></script>
-     <script>
-  $( function() {
-    $( "#tabs" ).tabs();
-  } );
+  <script defer src="script.js"></script>
+  <script>
+    $(function () {
+      $("#tabs").tabs();
+    });
   </script>
 </head>
+
 <body>
-<!-- Main Form for the Service Cloud Widget POC -->
-<div id="tabs">
-  <ul>
-    <li><a href="#tabs-1">Actions</a></li>
-    <li><a href="#tabs-2">Agent Status</a></li>
-    <li><a href="#tabs-3">Technical</a></li>
-  </ul>
-  <div id="tabs-1">
-      Caller ID:<input type="text" id="callID" >
-      <input type="text" id="auth" >
+  <!-- Main Form for the Service Cloud Widget POC -->
+  <div id="tabs">
+    <ul>
+      <li><a href="#tabs-1">Actions</a></li>
+      <li><a href="#tabs-2">Agent Status</a></li>
+      <li><a href="#tabs-3">Technical</a></li>
+    </ul>
+    <div id="tabs-1">
+      Caller ID:<input type="text" id="callerID">
+      <input type="password" id="auth" value="MTAwMjAwNTpCdWRkeWxvbzExMQ==">
       <button id="Accept" onClick="handleAccept()">Accept</button>
-    <button id="Accept">End</button>  
+      <button id="Accept">End</button>
+    </div>
+    <div id="tabs-2">
+      <button id="Accept">Ready</button>
+      <button id="Accept">Break</button>
+    </div>
+    <div id="tabs-3">
+     <p> <select id="action" name="action" required>
+        <option value="NOTIFY">NOTIFY</option>
+        <option value="ACCEPT">ACCEPT</option>
+        <option value="END">END</option>
+      </select>
+      </p>
+      Payload:<p id="uiPayload"></p>
+
+    </div>
   </div>
-  <div id="tabs-2">
-   <button id="Accept">Ready</button>
-    <button id="Accept">Break</button>  
-  </div>
-  <div id="tabs-3">
-  
-      
-  </div>
-</div>
 </body>
+
 </html>
