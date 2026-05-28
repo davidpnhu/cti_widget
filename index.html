@@ -50,6 +50,17 @@
 
     </div>
   </div>
+
+<script>
+  
+$(document).ready(function() {
+    // get Agent name
+  var parentElem = $(window.parent.document).find("span[label*='Organizer:']").closest("div");
+  console.log("Agent: " + parentElem);
+  
+});
+
+</script>  
 </body>
 
 </html>
