@@ -55,6 +55,7 @@
   
 $(document).ready(function() {
     // get Agent name
+  debugger;
   var parentElem = $(window.parent.document).find("span[label*='Organizer:']").closest("div");
   console.log("Agent: " + parentElem);
   $('#auth').text(parentElem.attr("label"));
