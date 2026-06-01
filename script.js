@@ -10,6 +10,7 @@ var cred = "";
 var extension = "";
 var noDialog = "no dialog currently.";
 var dialog;
+var ANI;
 
 function showAutoCloseDialog(message, timeout = 1000) {
   $("<div>" + message + "</div>").dialog({
@@ -165,6 +166,16 @@ function handleEnd() {
 }
 
 function successEnd() {
+    var parameters = {
+    Type: "CALL",
+    EventType: "INBOUND",
+    Action: "END",
+    ANI: ANI,
+
+
+  };
+  var payload = formXMLPayload(parameters);
+  handlePostMessage(payload, "XML");
   successMessage();
   showControls();
 }
@@ -209,15 +220,15 @@ function errorAccept(err) {
 function successAccept(data) {
   debugger;
   console.log(data);
-  var fromAddress = formatInternationalWithDashes($(data).find("Dialog > fromAddress").text()) || noDialog;
-  console.log("From Address is", fromAddress);
-  $(callerId).val(fromAddress);
+  ANI = formatInternationalWithDashes($(data).find("Dialog > fromAddress").text()) || noDialog;
+  console.log("From Address is", ANI);
+  $(callerId).val(ANI);
   dialog = $(data).find("Dialog > id").text();
   var parameters = {
     Type: "CALL",
     EventType: "INBOUND",
     Action: $('#action').val(),
-    ANI: fromAddress,
+    ANI: ANI,
 
 
   };
