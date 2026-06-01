@@ -21,7 +21,7 @@
       $("#tabsCTI").tabs();
       $("#enablePoll").checkboxradio();
 
-      $("#tabsCTI").hide();
+      //$("#tabsCTI").hide();
       $("#form_LogIn").show();
 
       //buttons
@@ -65,6 +65,11 @@
   </script>
   <style>
     
+.ready-sel::before {
+  content: "✔ ";
+  color: green;
+}
+
 
 
     #tabsCTI{
@@ -88,11 +93,12 @@
     }
 
     .state-not-ready {
-      background-color: rgb(231, 74, 62);
+          background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_ff0000_256x240.png) !important;
+
     }
 
     .state-ready {
-      background-color: rgb(67, 169, 66);
+       background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_43a942_256x240.png) !important;
     }
 
 
@@ -123,12 +129,12 @@
 
         <div class="form-row"> <label for="uiState">State</label>
           <select name="uiState" id="uiState">
-            <option value="" data-class="state-not-ready">Not Ready</option>
-            <option value="40" data-class="state-not-ready">Break/Lunch</option>
-            <option value="42" data-class="state-not-ready">Personal</option>
-            <option value="43" data-class="state-not-ready">Meeting</option>
-            <option value="44" data-class="state-not-ready">Training</option>
-            <option value="READY" data-class="state-ready">Ready</option>
+            <option value="" data-class="state-not-ready ui-icon-bullet">Not Ready</option>
+            <option value="40" data-class="state-not-ready ui-icon-bullet">Break/Lunch</option>
+            <option value="42" data-class="state-not-ready ui-icon-bullet">Personal</option>
+            <option value="43" data-class="state-not-ready ui-icon-bullet">Meeting</option>
+            <option value="44" data-class="state-not-ready ui-icon-bullet">Training</option>
+            <option value="READY" data-class="state-ready ui-icon-bullet">Ready</option>
           </select>
         </div>
         <div id="uiControls" class="form">
