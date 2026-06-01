@@ -53,7 +53,7 @@ function showControls() {
   $(btnAccept).show();
   $(btnEnd).hide();
   $(callerId).val("");
-  $(uiPayload).text("");
+ // $(uiPayload).text("");
 }
 
 function showEnd() {
@@ -166,6 +166,7 @@ function handleEnd() {
 }
 
 function successEnd() {
+  debugger;
     var parameters = {
     Type: "CALL",
     EventType: "INBOUND",
