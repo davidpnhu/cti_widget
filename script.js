@@ -1,5 +1,36 @@
+var uiLogIn = "#uiLogIn";
+var tabsCTI = "#tabsCTI";
+var uiState = "#uiState";
+var uiControls = "#uiControls";
+var btnEnd = "#End";
+var btnAccept = "#Accept";
+var callerId = "#callerID";
+var uiPayload = "#uiPayload";
+var cred = "";
+var extension = "";
+var noDialog = "no dialog currently.";
+var dialog;
+
+function showAutoCloseDialog(message, timeout = 1000) {
+  $("<div>" + message + "</div>").dialog({
+    modal: true,
+    title: "Message",
+    open: function () {
+      var dlg = $(this);
+      setTimeout(function () {
+        dlg.dialog("close");
+      }, timeout);
+    },
+    close: function () {
+      $(this).remove(); // clean up DOM
+    }
+  });
+}
+
 
 function formatInternationalWithDashes(phone) {
+  //console.log(formatInternationalWithDashes("6138091652"));
+  // +1 613-809-1652
   const digits = phone.replace(/\D/g, "");
 
   // Assume North America if 10 digits
@@ -16,47 +47,183 @@ function formatInternationalWithDashes(phone) {
 }
 
 
+function showControls() {
+  $(uiControls).show();
+  $(btnAccept).show();
+  $(btnEnd).hide();
+  $(callerId).val("");
+  $(uiPayload).text("");
+}
 
+function showEnd() {
+  if ($(callerId).val() !== noDialog) {
+    $(btnEnd).show();
+    $(btnAccept).hide();
+  }
+}
+
+function handlePoll() {
+  var count = 0;
+  do {
+    var checked = $('#enablePoll').is(':checked');
+    console.log("enablePoll:" + checked);
+    //handleAccept();
+    //debugger;
+    count++;
+    $('#countPoll').text(count);
+    setTimeout(() => {
+      console.log("sleeping");
+    }, 5000);
+  } while (checked == true);
+}
+
+function callFinesse(url, method, xmlBody, successHandler, errorHandler) {
+
+  var auth = getAuth();
+  $('#api').text(url);
+  $.ajax({
+    url: url,
+    method: method,
+    contentType: "application/xml",
+    data: xmlBody,
+    headers: {
+      "Authorization": "Basic " + auth
+    },
+    success: successHandler,
+    error: errorHandler
+  });
+}
+
+
+function handleState() {
+  // Set State
+  debugger;
+  var xmlBody;
+  var url = getURL() + "User/" + $('#username').val();
+  var selState = $(uiState).val();
+  if (selState === "READY") {
+    xmlBody = "<User><state>READY</state></User>";
+  }
+  else {
+    xmlBody = "<User><state>NOT_READY</state><reasonCodeId>" + selState + "</reasonCodeId></User>";
+  }
+  callFinesse(url, "PUT", xmlBody, successState, errorMessage);
+
+}
+
+function successState() {
+  showAutoCloseDialog("Success!", 500);
+  var selState = $(uiState).val();
+  if (selState === "READY") {
+    showControls();
+  }
+  else {
+    $(uiControls).hide();
+  }
+}
+
+function successMessage() {
+  showAutoCloseDialog("Success!", 500);
+}
+
+function errorMessage() {
+  showAutoCloseDialog("Failed!", 500);
+}
+
+function handleLogIn() {
+  // LogIn
+  debugger;
+
+  var url = getURL() + "User/" + $('#username').val();
+  extension = $('#ext').val();
+  var xmlBody = "<User><state>LOGIN</state><extension>" + extension + "</extension></User>";
+
+  callFinesse(url, "PUT", xmlBody, successLogIn, errorLogIn);
+
+
+}
+
+function successLogIn(data) {
+  debugger;
+  successMessage();
+  $(uiLogIn).hide();
+  $(tabsCTI).show();
+}
+
+function errorLogIn(err) {
+  debugger;
+  errorMessage();
+}
+
+function handleEnd() {
+  // End call
+  debugger;
+  var url = getURL() + "Dialog/" + dialog;
+  var xmlBody = "<Dialog><targetMediaAddress>" + extension + "</targetMediaAddress><requestedAction>DROP</requestedAction></Dialog>";
+
+  callFinesse(url, "PUT", xmlBody, successEnd, errorMessage);
+}
+
+function successEnd() {
+  successMessage();
+  showControls();
+}
+
+function getURL() {
+  var url = $('#api').val() || "https://canbs-ccx-pub.internal.bloodservices.ca:8445/finesse/api/";
+  return url;
+}
+
+function getAuth() {
+  if (cred)
+    return cred;
+  //otherwise
+  var auth;
+  if ($('#pwd')) {
+    auth = btoa($('#username').val() + ":" + $('#pwd').val()); // Base64 encode
+    cred = auth;
+  }
+  return auth;
+}
+
+function getAgentId() {
+  id = "1002005";
+  return id;
+}
 
 
 function handleAccept() {
-    // Example
-//console.log(formatInternationalWithDashes("6138091652"));
-// +1 613-809-1652
+  // Accept call
   debugger;
-  var auth = "Basic " + $('#auth').val();
-  //"https://canbs-ccx-pub.internal.bloodservices.ca:8445/finesse/api/User/1002005/Dialogs"
-  var url = $('#api').val();
-  //  "https://my1002373.us1.test.crm.cloud.sap/sap/c4c/api/v1/account-service/accounts?$filter=defaultCommunication/phoneNormalisedNumber%20eq%20%27%2B16131112222%27&$select=displayId,isNaturalPerson";
-  $.ajax({
-    url: url,
-    method: "GET",
-    headers: {
-      "Authorization": auth
-    },
-    success: function (data) {
-      debugger;
-      console.log(data);
-      var fromAddress = formatInternationalWithDashes($(data).find("Dialog > fromAddress").text());
-      console.log("From Address is", fromAddress);
-      $('#callerID').val(fromAddress);
-      var parameters = {
-        Type: "CALL",
-        EventType: "INBOUND",
-        Action: $('#action').val(),
-        ANI: fromAddress,
+  var agentId = getAgentId();
+  var url = getURL() + "User/" + agentId + "/Dialogs";
+
+  callFinesse(url, "GET", "", successAccept, errorAccept);
+}
+
+function errorAccept(err) {
+  debugger;
+  console.error(err);
+}
+
+function successAccept(data) {
+  debugger;
+  console.log(data);
+  var fromAddress = formatInternationalWithDashes($(data).find("Dialog > fromAddress").text()) || noDialog;
+  console.log("From Address is", fromAddress);
+  $(callerId).val(fromAddress);
+  dialog = $(data).find("Dialog > id").text();
+  var parameters = {
+    Type: "CALL",
+    EventType: "INBOUND",
+    Action: $('#action').val(),
+    ANI: fromAddress,
 
 
-      };
-      var payload = formXMLPayload(parameters);
-      handlePostMessage(payload, "XML");
-    },
-    error: function (err) {
-      debugger;
-      console.error(err);
-    }
-  });
-
+  };
+  var payload = formXMLPayload(parameters);
+  handlePostMessage(payload, "XML");
+  showEnd();
 }
 
 function handlePostMessage(payload, type) {
@@ -71,7 +238,7 @@ function handlePostMessage(payload, type) {
 }
 
 function displayPayloadMessage(payload) {
-  $('#uiPayload').text(payload);
+  $(uiPayload).text(payload);
 }
 
 function formXMLPayload(parameters) {
