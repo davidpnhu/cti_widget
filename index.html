@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Service Cloud Widget POC</title>
+  <title>CTI integration</title>
   <meta name="author" content="Lloyd Goveia">
   <meta name="description" content="Service Cloud Widget POC created by Lloyd Goveia. Provided AS IS with no support.">
   <link rel="stylesheet" href="style.css">
@@ -13,55 +13,163 @@
   <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
   <script defer src="script.js"></script>
   <script>
+
+
+
+
     $(function () {
-      $("#tabs").tabs();
+      $("#tabsCTI").tabs();
+      $("#enablePoll").checkboxradio();
+
+      $("#tabsCTI").hide();
+      $("#form_LogIn").show();
+
+      //buttons
+      $("#End").hide();
+      $("#uiControls").hide();
+
+
+      $.widget("custom.iconselectmenu", $.ui.selectmenu, {
+        _renderItem: function (ul, item) {
+          var li = $("<li>"),
+            wrapper = $("<div>", { text: item.label });
+
+          if (item.disabled) {
+            li.addClass("ui-state-disabled");
+          }
+
+          $("<span>", {
+            style: item.element.attr("data-style"),
+            "class": "ui-icon " + item.element.attr("data-class")
+          })
+            .appendTo(wrapper);
+
+          return li.append(wrapper).appendTo(ul);
+        }
+      });
+
+      $("#uiState")
+        .iconselectmenu({
+          change: function (event, data) {
+            handleState();
+          }
+        })
+        .iconselectmenu("menuWidget")
+        .addClass("ui-menu-icons")
+
+
+    
+
     });
+    
   </script>
+  <style>
+    
+
+
+    #tabsCTI{
+      max-width: 300px;
+    }
+
+    .form {
+      display: grid;
+      grid-template-columns: 1fr;
+      /* Defines 1 single column */
+      grid-template-rows: repeat(5, auto);
+      /* Creates 5 rows */
+      gap: 15px;
+      /* Adds space between the rows */
+      max-width: 250px;
+    }
+
+    .form-row input {
+      width: 100%;
+      /* Ensures input fills the row width */
+    }
+
+    .state-not-ready {
+      background-color: rgb(231, 74, 62);
+    }
+
+    .state-ready {
+      background-color: rgb(67, 169, 66);
+    }
+
+
+  </style>
 </head>
 
 <body>
-  <!-- Main Form for the Service Cloud Widget POC -->
-  <div id="tabs">
-       <ul>
-      <li><a href="#tabs-1">Call</a></li>
-      <li><a href="#tabs-2">State</a></li>
-      <li><a href="#tabs-3">Technical</a></li>
-    </ul>
-    <div id="tabs-1">
-      Hi <label id="agent" />
-      Caller ID:<input type="text" id="callerID">
-      API:<input type="text" id="api" value="">
-      <input type="password" id="auth" value="">
-      <button id="Accept" onClick="handleAccept()">Accept</button>
-      <button id="Accept">End</button>
-    </div>
-    <div id="tabs-2">
-      <button id="Accept">Ready</button>
-      <button id="Accept">Break</button>
-    </div>
-    <div id="tabs-3">
-     <p> <select id="action" name="action" required>
-        <option value="NOTIFY">NOTIFY</option>
-        <option value="ACCEPT">ACCEPT</option>
-        <option value="END">END</option>
-      </select>
-      </p>
-      Payload:<p id="uiPayload"></p>
 
-    </div>
+  <div id="uiLogIn" class="form" class="login-input">
+    <label>Username:</label><input type="text" id="username" value="" >
+    <label>Password:</label><input type="password" id="pwd" value="" >
+    <label>Extension:</label><input type="text" id="ext" value="">
+    <button id="login" onClick="handleLogIn()"><span class="ui-icon ui-icon-circle-arrow-e"></span>Log In</button>
   </div>
 
-<script>
-  
-$(document).ready(function() {
-    // get Agent name
-  debugger;
-  var parentElem = $(window.parent.document).find("span[label*='Organizer:']").closest("div");
-  console.log("Agent: " + parentElem);
-  $('#auth').text(parentElem.attr("label"));
-});
+  <!-- Main Form for the Service Cloud Widget POC -->
+  <div id="tabsCTI" >
+    <ul>
+      <li><a href="#tabs-1">State</a></li>
+      <li><a href="#tabs-2">Technical</a></li>
+    </ul>
 
-</script>  
+    <div id="tabs-1">
+
+
+      <div id="uiCTI" class="form">
+
+
+        <div class="form-row"> <label for="uiState">State</label>
+          <select name="uiState" id="uiState">
+            <option value="" data-class="state-not-ready">Not Ready</option>
+            <option value="40" data-class="state-not-ready">Break/Lunch</option>
+            <option value="42" data-class="state-not-ready">Personal</option>
+            <option value="43" data-class="state-not-ready">Meeting</option>
+            <option value="44" data-class="state-not-ready">Training</option>
+            <option value="READY" data-class="state-ready">Ready</option>
+          </select>
+        </div>
+        <div id="uiControls" class="form">
+          <div class="form-row"><button id="Accept" onClick="handleAccept()" ><span class="ui-icon ui-icon-circle-zoomin"></span>View Account</button></div>
+          <div class="form-row"><button id="End" onClick="handleEnd()"><span class="ui-icon ui-icon-circle-close"></span>End Call</button></div>
+        </div>
+      </div>
+
+
+      <!--
+  <fieldset>
+    <legend>Automatic Polling: </legend>
+    <label for="enablePoll">Enabled</label>
+    <input type="checkbox" name="enablePoll" id="enablePoll" onClick="handlePoll()">
+    <label id="countPoll"></label>
+  </fieldset>
+-->
+
+    </div>
+
+
+
+
+    <div id="tabs-2">
+      <div class="form">
+        API:<p id="api"> </p>
+        <div class="form-row">Caller ID:<p type="text" id="callerID"></p>
+        <div class="form-row">
+          <select id="action" name="action" required>
+            <option value="ACCEPT">ACCEPT</option>
+            <option value="NOTIFY">NOTIFY</option>
+            <option value="END">END</option>
+          </select>
+        </div>
+        <div class="form-row">Payload:
+          <p id="uiPayload" ></p>
+        </div>
+      </div>
+
+    </div>
+
 </body>
 
 </html>
