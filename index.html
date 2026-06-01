@@ -21,7 +21,7 @@
       $("#tabsCTI").tabs();
       $("#enablePoll").checkboxradio();
 
-      //$("#tabsCTI").hide();
+      $("#tabsCTI").hide();
       $("#form_LogIn").show();
 
       //buttons
@@ -103,7 +103,7 @@
 
 
 
-button {
+.btn-icon {
  background-image: url(https://download.jqueryui.com/themeroller/images/ui-icons_ffffff_256x240.png) !important;
 }
 
@@ -118,7 +118,7 @@ button {
     <label>Username:</label><input type="text" id="username" value="" >
     <label>Password:</label><input type="password" id="pwd" value="" >
     <label>Extension:</label><input type="text" id="ext" value="">
-    <button id="login" onClick="handleLogIn()"><span class="ui-icon ui-icon-arrow-1-e"></span>Log In</button>
+    <button id="login" onClick="handleLogIn()"><span class="ui-icon ui-icon-arrow-1-e btn-icon"></span>Log In</button>
   </div>
 
   <!-- Main Form for the Service Cloud Widget POC -->
@@ -145,8 +145,8 @@ button {
           </select>
         </div>
         <div id="uiControls" class="form">
-          <div class="form-row"><button id="Accept" onClick="handleAccept()" ><span class="ui-icon ui-icon-zoomin"></span>View Account</button></div>
-          <div class="form-row"><button id="End" onClick="handleEnd()"><span class="ui-icon ui-icon-close"></span>End Call</button></div>
+          <div class="form-row"><button id="Accept" onClick="handleAccept()" ><span class="ui-icon ui-icon-zoomin btn-icon"></span>View Account</button></div>
+          <div class="form-row"><button id="End" onClick="handleEnd()"><span class="ui-icon ui-icon-close btn-icon"></span>End Call</button></div>
         </div>
       </div>
 
