@@ -1,81 +1,98 @@
-/* Style for the Body */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+
+
+    /* Base navbar */
+.fiori-navbar {
+  background: #f7f7f7;
+  border-bottom: 3px solid #0a6ed1; /* SAP blue */
+  font-family: "72", Arial, sans-serif;
 }
 
-/* Style for the Form */
-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
+/* Brand */
+.brand-text {
+  font-size: 1.05rem;
+  color: #32363a;
+  font-weight: 600;
 }
 
-/* Header Styling */
-h1 {
-    text-align: center;
-    font-size: 1.5em;
+/* Links */
+.fiori-navbar .nav-link {
+  color: #32363a;
+  font-size: 0.9rem;
+  padding: 8px 14px;
 }
 
-/* Label Styling */
-label {
-    font-size: 0.85em; /* Reduced font size for labels */
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
+.fiori-navbar .nav-link:hover {
+  background: #eaecee;
+  border-radius: 4px;
 }
 
-/* Input and Textarea Styling */
-input[type="text"], input[type="email"], textarea, select {
-    width: calc(100% - 10px);
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+/* Active item */
+.fiori-navbar .nav-link.active {
+  border-bottom: 2px solid #0a6ed1;
+  font-weight: 600;
 }
 
-/* Button Styling */
-button {
-    display: inline-block;
-    padding: 6px 15px; /* Reduced button size */
-    font-size: 0.85em; /* Smaller font size */
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+/* Dropdown */
+.dropdown-menu {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 0.85rem;
 }
 
-/* Hover Effects for Buttons */
-button:hover {
-    background-color: #0056b3;
+.dropdown-item:hover {
+  background: #f0f8ff;
 }
 
-/* Style for Reset Button */
-#resetButton {
-    background-color: #dc3545;
-    margin-top: 10px;
+/* Search */
+.fiori-search {
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  padding-left: 10px;
 }
 
-#resetButton:hover {
-    background-color: #c82333;
+/* User circle */
+.user-circle {
+  width: 32px;
+  height: 32px;
+  background: #0a6ed1;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+/* Notification badge */
+.notification-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: red;
+  color: white;
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  border-radius: 50%;
 }
 
-/* Payload Message Styling */
-.payload-message {
-    background-color: #e8e8e8;
-    color: #333;
-    padding: 10px;
-    margin-top: 15px;
-    border-radius: 4px;
-    font-size: 0.9em;
-    word-wrap: break-word;
+/* Dropdown panel */
+.notification-dropdown {
+  width: 280px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+/* Notification item */
+.notif-title {
+  font-weight: 500;
+  color: #32363a;
+}
+
+.notif-time {
+  color: #888;
+  font-size: 0.75rem;
+}
+
+/* Hover */
+.notification-dropdown .dropdown-item:hover {
+  background: #f0f8ff;
 }
