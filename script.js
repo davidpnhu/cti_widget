@@ -385,7 +385,7 @@ function handleState() {
 }
 
 function successState() {
-  showAutoCloseDialog("Success!", 500);
+  //showAutoCloseDialog("Success!", 500);
   var selState = $(uiState).val();
   if (selState === "READY") {
     showControls();
@@ -396,7 +396,7 @@ function successState() {
 }
 
 function successMessage() {
-  showAutoCloseDialog("Success!", 500);
+ // showAutoCloseDialog("Success!", 500);
 }
 
 function errorMessage() {
